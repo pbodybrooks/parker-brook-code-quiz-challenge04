@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Coolest Coding Quiz</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <link rel="stylesheet" type="text/css" href="./assets/css/reset.css"/>
+  <link rel="stylesheet" type="text/css" href="./assets/css/style.css"/> <!-- links my stylesheet -->
+</head>
+
+<body>
+    <header>
+        <div id="heading-subheading">
+            <h1> Coolest Coding Quiz </h1>
+            <h2> Race the clock and answer as many questions as you can to set a high score! </h2>
+        </div>
+    </header>
+
+    <div id="quizMain">
+        <div id="startBox">
+            <h3> Click the <span style = "color:green; font-weight: bold">START</span> button to begin the game, if you dare.</h3>
+            <p> You will have 90 seconds to answer as many questions as you can before time runs out. <br> 
+                <span style="color:green">Correct answers</span> award one point each, while 
+                <span style="color:red">incorrect answers</span> remove 5 seconds from your remaining time.</p>
+                <button id="startButton">START</button>
+                <button id="leaderboardButton">Leaderboard</button>  
+        </div>
+
+        <div id="quizBox">
+            <div id="clockBox"> Clock
+
+            </div>
+            <div id="questionsBox">
+                <p>Question</p>
+                <button id="answerA"></button>
+                <button id="answerB"></button>
+                <button id="answerC"></button>
+                <button id="answerD"></button>
+            </div>
+
+        </div>
+
+        <div id="leaderboardBox">
+
+        </div>
+
+    </div>
+
+    
+
+    <footer>
+        <h5>😎 Designed by Park 😎</h5>
+        <p>2023</p>
+    </footer>
+
+    <script src="./assets/js/script.js"></script>
+</body>
+</html>
