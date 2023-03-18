@@ -11,6 +11,7 @@ const startBoxEl = document.querySelector("#startBox");
 let time;
 let playerScore = 0;
 let qIndex = 0;
+let correctAnswer;
 
 // Questions Bank
 const questions = [
@@ -44,19 +45,37 @@ function showQuestion() {
     for (let i=0; i<possibleAnswers.length; i++){
         possibleAnswers[i].innerHTML = questions[qIndex].answers[i];
     }
-    qIndex++
 }
 
 function validateAnswer() {
-    if (playerAnswer === answer){
+    correctAnswer = questions[qIndex].answer;
+    for (let i=0; i<possibleAnswers.length; i++){
+        possibleAnswers.addEventListener("click",function(event){
+            if (playerAnswer === correctAnswer){
+                playerScore++;
+                qIndex++;
+                showQuestion;
+            } else if (playerAnswer !== correctAnswer){
+                qIndex++;
+                time = time - 10;
+                showQuestion;
+            }
+        })
+    }
+}
+
+/* function validateAnswer() {
+    correctAnswer = questions[qIndex].answer;
+    if (playerAnswer === correctAnswer){
         playerScore++;
         qIndex++;
         showQuestion;
-    } else if (playerAnswer !== answer){
+    } else if (playerAnswer !== correctAnswer){
         qIndex++;
         time = time - 10;
+        showQuestion;
     }
-}
+} */
 
 // gameClock runs a countdown timer that starts when the start button is pressed and will display the remaining time to the player. 
 function gameClock() {
@@ -88,10 +107,9 @@ function gameClock() {
 
 function startGame(){
     startBoxEl.style.display = "none";
-
-
     gameClock();
     showQuestion();
+    validateAnswer();
 }
 
 

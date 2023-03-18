@@ -87,12 +87,14 @@ h2 {
     align-items: center;
     padding: 5vw;
 }
+
 #clockBox p{
     background-color: rgb(79, 79, 79);
     font-size: 5vw;
     padding: .6vw;
     border: .1vw solid white;
 }
+
 #questionsBox {
     display: flex;
     flex-direction: column;
@@ -100,17 +102,20 @@ h2 {
     align-items: center;
     padding: 2vw;
 }
+
 #num{
     font-size: 4vw;
     text-align: center;
     padding-top: 2vw;
     padding-bottom: .5vw;
 }
+
 #question{
     font-size: 3vw;
     text-align: center;
     padding-bottom: 2vw;
 }
+
 #questionsBox button{
     background-color:rgb(224, 198, 255);
     height: 5vw;
@@ -120,6 +125,10 @@ h2 {
     border-width: .3vw;
     margin: .2vw;
 }
+#questionsBox button:hover{
+    background-color:rgb(205, 165, 254);
+}
+
 #clockBox {
     font-size: 2vw;
 }
