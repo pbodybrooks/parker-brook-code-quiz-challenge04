@@ -1,15 +1,12 @@
 // Stored HTML Elements - storing elements in the HTML selected via querySelectors to be used later in our functions
 
-var startButtonEl = document.querySelector('#startButton');
+var startButtonEl = document.querySelector("#startButton");
 var clockEl = document.querySelector('#clockBox');
 var activeQuestion = document.querySelector('#questionsBox')
-
-
 
 // Global Scope variables
 let time;
 let playerScore = 0;
-let activeQuestion;
 let qIndex = 0;
 
 // Questions Bank
@@ -25,7 +22,6 @@ const questions = [
         ],
         answer: 'script.js'
     },
-
     {
         num: 2,
         question: "",
@@ -52,7 +48,6 @@ function validateAnswer() {
         qIndex++;
         time = time - 10;
     }
-
 }
 
 // gameClock runs a countdown timer that starts when the start button is pressed and will display the remaining time to the player. 
@@ -85,7 +80,6 @@ function gameClock() {
 
 function startGame(){
     gameClock();
-
 }
 
 
@@ -115,34 +109,6 @@ The startGame function will do the following:
 - once the last question is answered or time runs out, the function will end the game and display the users score and ask if they'd like to play again
 - return a score
 - After the function has been run, the score will be saved to a leaderboard using local storage
-
-
-
-
-
-
-
-Sample Question:
-
-1. Why is the sky blue?
-    o That's the way it is
-    o Because of the way light refracts off water molecules in the atmosphere
-    o Who cares
-    o I don't know
-
-    | Submit |
-
-
-
-
-setInterval()
-    for loop
-        var seconds
-        seconds --
-
-
-
-
 
 */
 
