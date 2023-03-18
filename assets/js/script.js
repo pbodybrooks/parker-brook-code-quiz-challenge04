@@ -1,8 +1,11 @@
 // Stored HTML Elements - storing elements in the HTML selected via querySelectors to be used later in our functions
-
-var startButtonEl = document.querySelector("#startButton");
-var clockEl = document.querySelector('#clockBox');
-var activeQuestion = document.querySelector('#questionsBox')
+// change these vars to consts after confirm working
+const startButtonEl = document.querySelector('#startButton');
+const clockEl = document.querySelector('#clockBox p');
+const qNumEl = document.querySelector('#num');
+const activeQuestion = document.querySelector('#question');
+const possibleAnswers = document.querySelectorAll(".answer");
+const startBoxEl = document.querySelector("#startBox");
 
 // Global Scope variables
 let time;
@@ -23,7 +26,7 @@ const questions = [
         answer: 'script.js'
     },
     {
-        num: 2,
+        number: 2,
         question: "",
         answers: [
             "",
@@ -36,7 +39,12 @@ const questions = [
 ]
 
 function showQuestion() {
-    activeQuestion.textContent = questions[qIndex].question
+    qNumEl.textContent = "Question #" + questions[qIndex].number;
+    activeQuestion.textContent = questions[qIndex].question;
+    for (let i=0; i<possibleAnswers.length; i++){
+        possibleAnswers[i].innerHTML = questions[qIndex].answers[i];
+    }
+    qIndex++
 }
 
 function validateAnswer() {
@@ -79,7 +87,11 @@ function gameClock() {
 }
 
 function startGame(){
+    startBoxEl.style.display = "none";
+
+
     gameClock();
+    showQuestion();
 }
 
 
