@@ -86,13 +86,15 @@ h2 {
     justify-content: center;
     align-items: center;
     padding: 5vw;
+    display: none;
 }
 
 #clockBox p{
-    background-color: rgb(79, 79, 79);
+    /* background-color: rgb(79, 79, 79);
+    border: .1vw solid white; */
     font-size: 5vw;
     padding: .6vw;
-    border: .1vw solid white;
+    text-align: center;
 }
 
 #questionsBox {
