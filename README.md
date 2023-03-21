@@ -4,7 +4,7 @@ Repo for Challenge 04 - Code Quiz
 ## Description
 This project is a coding quiz that tasks players with answering as many coding-related questions as possible before the time runs out. Once the game ends, players can submit their initials and score to a leaderboard where they can compare themselves to past players.
 
-Link to deployed webpage: https://pbodybrooks.github.io/parker-brook-password-generator-challenge03/
+Link to deployed quiz: https://pbodybrooks.github.io/parker-brook-code-quiz-challenge04/
 
 ## Screenshot
 ![Screenshot of coding quiz.](assets/images/screenshot.png)
