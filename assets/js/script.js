@@ -186,26 +186,40 @@ function showQuestion() {
     return validateAnswer();
 }
 
+
+
+
+
 // validateAnswer is used to check whether the players selected answer is correct or incorrect
 // it works by using a for loop to add event listeners to each answer in the answers array, listening for a click
 // when clicked, the function event containing an if statement runs, looking to see if the player's selected string matches the correct answer string
 // it then takes action on a correct or incorrect answer (add points, subtract time, etc.)
 function validateAnswer() {
-    console.log(correctAnswer);
+    // console.log(correctAnswer);
     correctAnswer = questions[qIndex].answer;
     for (let i=0; i<possibleAnswers.length; i++){
-        possibleAnswers[i].addEventListener("click",function(event){
+        possibleAnswers[i].addEventListener("click",function validateClick(event){
             if (possibleAnswers[i].innerHTML === correctAnswer){
                 alert("That is correct!\nYou've earned a point!");
                 playerScore++;
                 qIndex++;
-                showQuestion();
+                possibleAnswers[i].removeEventListener("click",validateClick);
+                // for (let i=0; i<possibleAnswers.length; i++){
+                //     possibleAnswers[i].removeEventListener("click",validateClick);
+                // }
+                // showQuestion();
             } else {
                 alert("That is incorrect.\n10 seconds have been removed from the clock.");
                 qIndex++;
                 time = time - 10;
-                showQuestion();
+                possibleAnswers[i].removeEventListener("click",validateClick);
+                // for (let i=0; i<possibleAnswers.length; i++){
+                //     possibleAnswers[i].removeEventListener("click",validateClick);
+                // }
+                // showQuestion();
             }
+            possibleAnswers[i].removeEventListener("click",validateClick);
+            showQuestion();
         })
     }
 }
