@@ -24,13 +24,6 @@ header {
     margin-top: 5vh;
 }
 
-#heading-subheading{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-}
-
 h1 {
     font-size: 5vh;
     padding: .7vh;
@@ -54,6 +47,14 @@ h2 {
     justify-content: center;
     align-items: center;
 }
+
+#startBox p {
+    font-size: 2vh;
+    text-align: center;
+    line-height: 5vh;
+    padding: 3vh;
+}
+
 #startButton{
     background-color: rgb(0, 216, 0);
     height: 5vw;
@@ -63,6 +64,7 @@ h2 {
     border-radius: .5vw;
     border-width: .3vw;
     margin: 1vw;
+    margin-top: 5vw;
 }
 #startButton:hover{
     background-color: rgb(0, 200, 0);
@@ -90,8 +92,6 @@ h2 {
 }
 
 #clockBox p{
-    /* background-color: rgb(79, 79, 79);
-    border: .1vw solid white; */
     font-size: 5vw;
     padding: .6vw;
     text-align: center;
@@ -135,15 +135,97 @@ h2 {
     font-size: 2vw;
 }
 
+#endscreenBox {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 
+#finalScore {
+    font-size: 3vw;
+    padding: 2vw;
+}
 
+#playerInitials{
+    height: 5vw;
+}
 
+#submitPlayerScore {
+    background-color: rgb(191, 138, 255);
+    height: 5vw;
+    width: 15vw;
+    font-size: 2vw;
+    text-align: center;
+    border-radius: .5vw;
+    border-width: .3vw;
+    margin: 1vw;
+}
 
+#submitPlayerScore:hover {
+    background-color: rgb(177, 112, 255);
+}
 
-footer{
-    display: flex;
+#leaderboardBox {
+    display: none;
     flex-direction: column;
     align-items: center;
-    padding: 10px;
-    font-size: 1vw;
 }
+
+#leaderboardTopBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    background-color:  rgb(255, 170, 0);
+    color: black;
+    font-size: 2vw;
+    width: 60vw;
+    height: 5vh;
+    border-bottom: 5px solid rgb(135, 90, 0);
+}
+
+#leaderboardBody {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    background-color:  rgb(255, 212, 128);
+    color: black;
+    font-size: 1.8vw;
+    width: 60vw;
+}
+
+#leaderboardBodyName li {
+    padding: .5vh;
+}
+
+#leaderboardBodyScore li {
+    padding: .5vh;
+}
+
+#replayButton {
+    background-color: rgb(191, 138, 255);
+    text-align: center;
+    height: 5vw;
+    width: 15vw;
+    font-size: 2vw;
+    text-align: center;
+    border-radius: .5vw;
+    border-width: .3vw;
+    margin: 1vw;
+}
+
+#leaderboardResetButton {
+    background-color: rgb(255, 80, 80);
+    text-align: center;
+    height: 3vw;
+    width: 15vw;
+    font-size: 1.5vw;
+    text-align: center;
+    border-radius: .5vw;
+    border-width: .3vw;
+    margin: 1vw;
+}
+
+
+

@@ -1,6 +1,7 @@
 // Stored HTML Elements - storing elements in the HTML selected via querySelectors to be used later in our functions
 // change these vars to consts after confirm working
 const startButtonEl = document.querySelector('#startButton');
+const showLeaderboard = document.querySelector("#leaderboardButton")
 const quizBoxEl = document.querySelector('#quizBox');
 const clockEl = document.querySelector('#clockBox p');
 const qNumEl = document.querySelector('#num');
@@ -8,7 +9,15 @@ const activeQuestion = document.querySelector('#question');
 const possibleAnswers = document.querySelectorAll(".answer");
 const startBoxEl = document.querySelector("#startBox");
 const currentScoreEl = document.querySelector("#currentScore");
+const endscreenBoxEl = document.querySelector("#endscreenBox");
 const finalScoreEl = document.querySelector("#finalScore");
+const playerScoreInputEl = document.querySelector("#playerInitials");
+const submitPlayerScoreEl = document.querySelector("#submitPlayerScore");
+const leaderboardBoxEl = document.querySelector("#leaderboardBox");
+const leaderboardName = document.querySelector("#leaderboardBodyName");
+const leaderboardScore = document.querySelector("#leaderboardBodyScore");
+const replayButtonEl = document.querySelector("#replayButton");
+const resetLeaderboardButtonEl = document.querySelector("#leaderboardResetButton")
 
 // Global Scope variables
 let time;
@@ -17,6 +26,9 @@ let qIndex = 0;
 let correctAnswer;
 
 // Questions Bank
+// this contains all of our questions to be shown to the player in a single array. 
+// the array consists of question objects, each containing the number, question itself, answers, and correct answers as key-value pairs.
+// the answers value is an array of strings to be shown to the player
 const questions = [
     {
         number: 1,
@@ -107,7 +119,8 @@ const questions = [
         answer: "Application Programming Interface"
     },
 ]
-
+// startGame runs the initial game function containing the clock and showing of the first question
+// we also wanted to hide the start game display and show the quiz display
 function startGame(){
     gameClock();
     startBoxEl.style.display = "none";
@@ -115,16 +128,17 @@ function startGame(){
     showQuestion();
 }
 
-// function showQuestionDelay() {
-//     var countdown1 = setInterval(function(){
-//         showQuestion
-//     }, 1000)
-// }
+// the jumpToLeaderboard function takes the user to the leaderboard
+function jumpToLeaderboard() {
+    startBoxEl.style.display = "none";
+    endscreenBoxEl.style.display = "none";
+    leaderboardBoxEl.style.display = "flex";
+}
 
 // gameClock runs a countdown timer that starts when the start button is pressed and will display the remaining time to the player. 
 function gameClock() {
     startBoxEl.style.display = "none";
-    time = 90 // Set the time remaining to 90 seconds.
+    time = 60 // Set the time remaining to 60 seconds.
     // setInterval method is used to repeatedly call the function containing the if statements every loop (1000ms).
     var countdown = setInterval(function() {
       if (time < 12 && time > 8 ) {
@@ -145,6 +159,7 @@ function gameClock() {
         clockEl.textContent = "⌛ Game over! ⌛";
         // clearInterval method cancels the previously created countdown timer.
         clearInterval(countdown);
+        // at time = 0, run the showEndscreen function
         showEndscreen();
       }
       // Sets the rate or interval of the function to 1000ms or 1 second.
@@ -152,6 +167,7 @@ function gameClock() {
 }
 
 // the showQuestion function references the indexed object in the questions array to display a question, number, and answers
+// after showing the question, validateAnswer is returned to prepare for the players choice
 function showQuestion() {
     // displays the question number
     qNumEl.textContent = "Question #" + questions[qIndex].number;
@@ -165,106 +181,177 @@ function showQuestion() {
     if (playerScore === 1){
         currentScoreEl.textContent = "You have " + playerScore + " point.";
     }
-    else {currentScoreEl.textContent = "You have " + playerScore + " points."
+    else {currentScoreEl.textContent = "You have " + playerScore + " points.";
     }
-    validateAnswer();
+    return validateAnswer();
 }
 
+// validateAnswer is used to check whether the players selected answer is correct or incorrect
+// it works by using a for loop to add event listeners to each answer in the answers array, listening for a click
+// when clicked, the function event containing an if statement runs, looking to see if the player's selected string matches the correct answer string
+// it then takes action on a correct or incorrect answer (add points, subtract time, etc.)
 function validateAnswer() {
     console.log(correctAnswer);
     correctAnswer = questions[qIndex].answer;
     for (let i=0; i<possibleAnswers.length; i++){
         possibleAnswers[i].addEventListener("click",function(event){
             if (possibleAnswers[i].innerHTML === correctAnswer){
-                // alert("That is correct!\nYou've earned a point!");
+                alert("That is correct!\nYou've earned a point!");
                 playerScore++;
                 qIndex++;
-                return showQuestion();
+                showQuestion();
             } else {
                 alert("That is incorrect.\n10 seconds have been removed from the clock.");
                 qIndex++;
                 time = time - 10;
-                return showQuestion();
+                showQuestion();
             }
-            // showQuestion();
         })
     }
 }
 
+// showEndscreen is a simple function that displays the endscreen and tells the player their score
+// it also will display a text field where intiials can be entered, and a button to submit
 function showEndscreen() {
+    startBoxEl.style.display = "none";
     quizBoxEl.style.display = "none";
-    finalScoreEl.textContent = "You answered " + playerScore + " out of " + questions.length + " questions correctly!"
-
+    endscreenBoxEl.style.display = "flex";
+    playerScoreInputEl.value = "";
+    finalScoreEl.textContent = "You answered " + playerScore + " out of " + questions.length + " questions correctly!";
 }
 
+// when player clicks the button to submit their initials and highscore, this event listener runs the saveHighScore function
+// this function will the player to the start screen if they dont want to enter initials, otherwise it will GET the leaderboard scores from localstorage, stringify, add the new score, and run showLeaderboardScores
+submitPlayerScoreEl.addEventListener("click", function saveHighScore(){
+    // if no initials entered, return player to start screen to play again
+    if (playerScoreInputEl.value === ""){
+        return playAgain();
+    } else {
+        // otherwise, if initials are entered, pull and stringify existing scores from local storage
+        let leaderboardScores = JSON.parse(localStorage.getItem("leaderboardScores")) || [];
+        // take form-submitted initials and store them in a variable that will serve as the value to the player key in the object we will push to local storage next
+        let playerInitials = playerScoreInputEl.value;
+        let playerFinalScore = {
+            player: playerInitials,
+            highScore: playerScore
+        };
+        // push new player's score and intials object to leaderboard's existing scores
+        leaderboardScores.push(playerFinalScore);
+        // add the new leaderboard scores (containing new player score/initials) into local storage
+        localStorage.setItem("leaderboardScores", JSON.stringify(leaderboardScores));
+        startBoxEl.style.display = "none";
+        endscreenBoxEl.style.display = "none";
+        leaderboardBoxEl.style.display = "flex";
 
+        showLeaderboardScores();
+    };
+});
 
+// showLeaderboardScores grabs the newly updated leaderboard scores from local storage. it then iterates through all the scores, creating a list item from each initials and score, setting their text content, and then appending them as children to the leaderboard columns
+function showLeaderboardScores() {
+    // grab all scores from local storage
+    let allScores = JSON.parse(localStorage.getItem("leaderboardScores")) || [];
+    // iterate through all scores
+    for (let i=0; i < allScores.length; i++){
+        // create a new list item for each entered player initials/score pair
+        let playerNames = document.createElement("li");
+        let playerScores = document.createElement("li");
+        // set the text content for player's initials and score
+        playerNames.textContent = allScores[i].player;
+        playerScores.textContent = allScores[i].highScore;
+        // append initials and score list elements as children of the respective categorical columns on the leaderboard
+        leaderboardName.appendChild(playerNames);
+        leaderboardScore.appendChild(playerScores);
+    }
+}
 
+// the playAgain function simply brings the player back to the start page and sets the score to 0 and returns to the first question
+function playAgain() {
+    playerScore = 0;
+    qIndex = 0;
+    endscreenBoxEl.style.display = "none";
+    leaderboardBoxEl.style.display = "none";
+    startBoxEl.style.display = "flex";
+}
 
-
-
+// resetLeaderboard resets local storage, clearing the leaderboard of all stored initials and scores
+function resetLeaderboard() {
+    window.localStorage.clear();
+    leaderboardName.textContent = "";
+    leaderboardScore.textContent = "";
+}
 
 // Event Listeners
+// listens for a click on START > starts the game
 startButtonEl.addEventListener("click",startGame);
+// listens for a click on Play again? > takes player back to start page
+replayButtonEl.addEventListener("click",playAgain);
+// listens for a click on Reset Leaderboard? > runs the function to clear leaderboard
+resetLeaderboardButtonEl.addEventListener("click",resetLeaderboard);
+// listens for a click on Leaderboard > takes the user to the leaderboard
+showLeaderboard.addEventListener("click",jumpToLeaderboard);
 
 
 
-
-/* ----------------------- Pseudo-code & Planning -----------------------
-first we will define the bank of questions as an array along with their corresponding answers as key-value pairs
-
-When the user loads the page, they will be presented with a large heading and subheading and a large green START
-button in the center of the page prompting the user to start the game
-
-When the user clicks the button, a function startGame will run via an event listener looking for a click on the button
-eventlister(click,startGame)
-
-The startGame function will do the following:
-- start the clock (90 seconds) using the setInterval method
-- the button will disappear via the display:none property/value pair 
-- a showQuestion function will present the user with the first question and its answers using the display:block property along with a button to submit answer
-- a second event listener will look for a click on the submit button click
-- a nested function submitAnswer will check the user answer
-- correct questions will prompt a function addPoints to add a point to a variable storing the users score
-- incorrect questions will deduct 5 seconds
-- once the last question is answered or time runs out, the function will end the game and display the users score and ask if they'd like to play again
-- return a score
-- After the function has been run, the score will be saved to a leaderboard using local storage
-
-*/
-
-// Code graveyard
-/* function validateAnswer() {
-    correctAnswer = questions[qIndex].answer;
-    console.log(correctAnswer);
-    for (let i=0; i<possibleAnswers.length; i++){
-        possibleAnswers[i].onclick = function(playerAnswer){
-            playerAnswer = questions[qIndex].answers[i];
-            console.log("playerAnswer string is " + playerAnswer);
-            if (playerAnswer === correctAnswer){
-                console.log("That is correct");
-                playerScore++;
-                qIndex++;
-                showQuestion;
-            } else if (playerAnswer !== correctAnswer){
-                console.log("That is incorrect");
-                qIndex++;
-                time = time - 10;
-                showQuestion;
-            }
+/* function showQuestion(x, y) {
+    if (x && y !== null) {
+        // displays the question numberx
+        qNumEl.textContent = "Question #" + questions[y].number;
+        // displays the question itself
+        activeQuestion.textContent = questions[y].question;
+        // for loop places an answer to be displayed into each of the four buttons
+        for (let i = 0; i < possibleAnswers.length; i++) {
+            possibleAnswers[i].innerHTML = questions[y].answers[i];
         }
-    }
-} */
+        // display the player's points and modify the phrasing slightly if it is one point or multiple/zero
+        if (x === 1) {
+            currentScoreEl.textContent = "You have " + x + " point.";
+        }
+        else {
+            currentScoreEl.textContent = "You have " + x + " points.";
+        }
+        return validateAnswer();
 
-/* function validateAnswer() {
+    } else {
+        // displays the question number
+        qNumEl.textContent = "Question #" + questions[qIndex].number;
+        // displays the question itself
+        activeQuestion.textContent = questions[qIndex].question;
+        // for loop places an answer to be displayed into each of the four buttons
+        for (let i = 0; i < possibleAnswers.length; i++) {
+            possibleAnswers[i].innerHTML = questions[qIndex].answers[i];
+        }
+        // display the player's points and modify the phrasing slightly if it is one point or multiple/zero
+        if (playerScore === 1) {
+            currentScoreEl.textContent = "You have " + playerScore + " point.";
+        }
+        else {
+            currentScoreEl.textContent = "You have " + playerScore + " points.";
+        }
+        return validateAnswer();
+    }
+}
+
+// validateAnswer is used to check whether the players selected answer is correct or incorrect
+// it works by using a for loop to add event listeners to each answer in the answers array, listening for a click
+// when clicked, the function event containing an if statement runs, looking to see if the player's selected string matches the correct answer string
+// it then takes action on a correct or incorrect answer (add points, subtract time, etc.)
+function validateAnswer() {
+    console.log(correctAnswer);
     correctAnswer = questions[qIndex].answer;
-    if (playerAnswer === correctAnswer){
-        playerScore++;
-        qIndex++;
-        showQuestion;
-    } else if (playerAnswer !== correctAnswer){
-        qIndex++;
-        time = time - 10;
-        showQuestion;
+    for (let i = 0; i < possibleAnswers.length; i++) {
+        possibleAnswers[i].addEventListener("click", function (event) {
+            if (possibleAnswers[i].innerHTML === correctAnswer) {
+                alert("That is correct!\nYou've earned a point!");
+                playerScore += 1;
+                qIndex += 1;
+                showQuestion(playerScore, qIndex);
+            } else {
+                alert("That is incorrect.\n10 seconds have been removed from the clock.");
+                qIndex += 1;
+                time -= 10;
+                showQuestion();
+            }
+        })
     }
 } */

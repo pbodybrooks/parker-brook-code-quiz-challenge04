@@ -6,32 +6,33 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <link rel="stylesheet" type="text/css" href="./assets/css/reset.css"/>
-  <link rel="stylesheet" type="text/css" href="./assets/css/style.css"/> <!-- links my stylesheet -->
+  <link rel="stylesheet" type="text/css" href="./assets/css/style.css"/> 
 </head>
 
 <body>
     <header>
-        <div id="heading-subheading">
-            <h1> Coolest Coding Quiz </h1>
-            <h2> Race the clock and answer as many questions as you can to set a high score! </h2>
-        </div>
+        <h1> Coolest Coding Quiz </h1>
     </header>
 
-    <main id="quizMain">
+<!-- I split my HTML code into different "boxes" to be shown/hidden depending on what should be displayed to the player -->
+    <main id="quizMain"> 
+        
+        <!-- startBox contains the game's isntructions, start button, and a button to view the leaderboard -->
         <div id="startBox">
-            <h3> Click the <span style = "color:green; font-weight: bold">START</span> button to begin the game, if you dare.</h3>
-            <p> You will have 90 seconds to answer as many questions as you can before time runs out. <br> 
+            <h2> Click the <span style = "color:green; font-weight: bold">START</span> button to begin the game, if you dare.</h2>
+            <p> You will have 60 seconds to answer as many questions as you can before time runs out. <br> 
                 <span style="color:green">Correct answers</span> award one point each, while 
-                <span style="color:red">incorrect answers</span> remove 5 seconds from your remaining time.</p>
+                <span style="color:red">incorrect answers</span> remove 10 seconds from your remaining time.</p>
             <button id="startButton">START</button>
             <button id="leaderboardButton">Leaderboard</button>  
         </div>
-
+        
+        <!-- quizBox displays the main quiz game to played including the timer, questions, and answers -->
         <div id="quizBox">
             <div id="clockBox">
                 <p> Clock </p>
-
             </div>
+            <!-- questionsBox contains  -->
             <div id="questionsBox">
                 <p id="num">Question #</p>
                 <p id="question">Question</p>
@@ -41,27 +42,31 @@
                 <button class="answer"></button>
                 <p id="currentScore">Points</p>
             </div>
-
         </div>
+
+        <!-- endscreenBox displays the end-game screen to the player, consisting of their score, an input field to enter intials, and a submit button -->
         <div id="endscreenBox">
             <p id="finalScore">Player Score</p>
-            <input type="text" size="100" placeholder="Enter you initials to be immortalized in the Coolest Coding Quiz Hall of Fame (or Shame)!" name="initials" id="initials"/>
-
+            <input type="text" size="80" placeholder="Enter your initials to be immortalized in the Coolest Coding Quiz Hall of Fame (or Shame)!" name="playerInitials" id="playerInitials"/>
+            <button id="submitPlayerScore">Submit Score!</button>
         </div>
 
+        <!-- leaderboardBox is used to display the leaderboard, which is two columns (initials/score) of player info, displayed as list items -->
         <div id="leaderboardBox">
-
+            <div id="leaderboardTopBar">
+                <h3> Player's Initials </h3>
+                <h3> Player's Score </h3>
+            </div>
+            <ul id="leaderboardBody">
+                <div id="leaderboardBodyName"></div>
+                <div id="leaderboardBodyScore"></div>
+            </ul>
+            <button id="replayButton"> Try again? </button>
+            <button id="leaderboardResetButton"> Reset Leaderboard? </button>
         </div>
-
     </main>
 
     
-
-    <footer>
-        <h5>😎 Designed by Park 😎</h5>
-        <p>2023</p>
-    </footer>
-
     <script src="./assets/js/script.js"></script>
 </body>
 </html>
