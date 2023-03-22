@@ -1,7 +1,7 @@
 // Stored HTML Elements - storing elements in the HTML selected via querySelectors to be used later in our functions
 // change these vars to consts after confirm working
 const startButtonEl = document.querySelector('#startButton');
-const showLeaderboard = document.querySelector("#leaderboardButton")
+const showLeaderboard = document.querySelector("#leaderboardButton");
 const quizBoxEl = document.querySelector('#quizBox');
 const clockEl = document.querySelector('#clockBox p');
 const qNumEl = document.querySelector('#num');
@@ -17,7 +17,8 @@ const leaderboardBoxEl = document.querySelector("#leaderboardBox");
 const leaderboardName = document.querySelector("#leaderboardBodyName");
 const leaderboardScore = document.querySelector("#leaderboardBodyScore");
 const replayButtonEl = document.querySelector("#replayButton");
-const resetLeaderboardButtonEl = document.querySelector("#leaderboardResetButton")
+const resetLeaderboardButtonEl = document.querySelector("#leaderboardResetButton");
+
 
 // Global Scope variables
 let time;
@@ -119,6 +120,7 @@ const questions = [
         answer: "Application Programming Interface"
     },
 ]
+
 // startGame runs the initial game function containing the clock and showing of the first question
 // we also wanted to hide the start game display and show the quiz display
 function startGame(){
@@ -186,42 +188,39 @@ function showQuestion() {
     return validateAnswer();
 }
 
-
-
-
-
-// validateAnswer is used to check whether the players selected answer is correct or incorrect
-// it works by using a for loop to add event listeners to each answer in the answers array, listening for a click
-// when clicked, the function event containing an if statement runs, looking to see if the player's selected string matches the correct answer string
-// it then takes action on a correct or incorrect answer (add points, subtract time, etc.)
+// validateAnswer checks the correct/incorrectness of the player's selected answer
+// note to grader: originally I attempted this using a for loop to add event listeners to the buttons, but it caused issues with stacking-event listeners and I wasn't able to fix it
 function validateAnswer() {
-    // console.log(correctAnswer);
+    // Log the correct answer in the console for debugging purposes
+    console.log(correctAnswer);
+    // Set the correct answer for the current question
     correctAnswer = questions[qIndex].answer;
-    for (let i=0; i<possibleAnswers.length; i++){
-        possibleAnswers[i].addEventListener("click",function validateClick(event){
-            if (possibleAnswers[i].innerHTML === correctAnswer){
-                alert("That is correct!\nYou've earned a point!");
-                playerScore++;
-                qIndex++;
-                possibleAnswers[i].removeEventListener("click",validateClick);
-                // for (let i=0; i<possibleAnswers.length; i++){
-                //     possibleAnswers[i].removeEventListener("click",validateClick);
-                // }
-                // showQuestion();
-            } else {
-                alert("That is incorrect.\n10 seconds have been removed from the clock.");
-                qIndex++;
-                time = time - 10;
-                possibleAnswers[i].removeEventListener("click",validateClick);
-                // for (let i=0; i<possibleAnswers.length; i++){
-                //     possibleAnswers[i].removeEventListener("click",validateClick);
-                // }
-                // showQuestion();
-            }
-            possibleAnswers[i].removeEventListener("click",validateClick);
-            showQuestion();
-        })
+    // Create a new function to handle the click event
+    function handleClick() {
+      // Get the clicked element from the event object
+      let clickedAnswer = event.target;
+      // Check if the clicked element has the class 'answer'
+      if (clickedAnswer.classList.contains('answer')) {
+        // Remove the event listener to prevent additional clicks
+        questionsBox.removeEventListener("click", handleClick);
+        // Check if the clicked answer matches the correct answer
+        if (clickedAnswer.innerHTML === correctAnswer) {
+          // If the answer is correct, display a success message and increment the player's score
+          alert("That is correct!\nYou've earned a point!");
+          playerScore++;
+        } else {
+          // If the answer is incorrect, display an error message and decrement the remaining time
+          alert("That is incorrect.\n10 seconds have been removed from the clock.");
+          time = time - 10;
+        }
+        // Move on to the next question
+        qIndex++;
+        // Show the next question
+        showQuestion();
+      }
     }
+    // Re-add the event listener for next question
+    questionsBox.addEventListener("click",handleClick);
 }
 
 // showEndscreen is a simple function that displays the endscreen and tells the player their score
@@ -304,68 +303,3 @@ replayButtonEl.addEventListener("click",playAgain);
 resetLeaderboardButtonEl.addEventListener("click",resetLeaderboard);
 // listens for a click on Leaderboard > takes the user to the leaderboard
 showLeaderboard.addEventListener("click",jumpToLeaderboard);
-
-
-
-/* function showQuestion(x, y) {
-    if (x && y !== null) {
-        // displays the question numberx
-        qNumEl.textContent = "Question #" + questions[y].number;
-        // displays the question itself
-        activeQuestion.textContent = questions[y].question;
-        // for loop places an answer to be displayed into each of the four buttons
-        for (let i = 0; i < possibleAnswers.length; i++) {
-            possibleAnswers[i].innerHTML = questions[y].answers[i];
-        }
-        // display the player's points and modify the phrasing slightly if it is one point or multiple/zero
-        if (x === 1) {
-            currentScoreEl.textContent = "You have " + x + " point.";
-        }
-        else {
-            currentScoreEl.textContent = "You have " + x + " points.";
-        }
-        return validateAnswer();
-
-    } else {
-        // displays the question number
-        qNumEl.textContent = "Question #" + questions[qIndex].number;
-        // displays the question itself
-        activeQuestion.textContent = questions[qIndex].question;
-        // for loop places an answer to be displayed into each of the four buttons
-        for (let i = 0; i < possibleAnswers.length; i++) {
-            possibleAnswers[i].innerHTML = questions[qIndex].answers[i];
-        }
-        // display the player's points and modify the phrasing slightly if it is one point or multiple/zero
-        if (playerScore === 1) {
-            currentScoreEl.textContent = "You have " + playerScore + " point.";
-        }
-        else {
-            currentScoreEl.textContent = "You have " + playerScore + " points.";
-        }
-        return validateAnswer();
-    }
-}
-
-// validateAnswer is used to check whether the players selected answer is correct or incorrect
-// it works by using a for loop to add event listeners to each answer in the answers array, listening for a click
-// when clicked, the function event containing an if statement runs, looking to see if the player's selected string matches the correct answer string
-// it then takes action on a correct or incorrect answer (add points, subtract time, etc.)
-function validateAnswer() {
-    console.log(correctAnswer);
-    correctAnswer = questions[qIndex].answer;
-    for (let i = 0; i < possibleAnswers.length; i++) {
-        possibleAnswers[i].addEventListener("click", function (event) {
-            if (possibleAnswers[i].innerHTML === correctAnswer) {
-                alert("That is correct!\nYou've earned a point!");
-                playerScore += 1;
-                qIndex += 1;
-                showQuestion(playerScore, qIndex);
-            } else {
-                alert("That is incorrect.\n10 seconds have been removed from the clock.");
-                qIndex += 1;
-                time -= 10;
-                showQuestion();
-            }
-        })
-    }
-} */
