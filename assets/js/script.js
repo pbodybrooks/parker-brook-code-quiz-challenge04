@@ -18,6 +18,7 @@ const leaderboardName = document.querySelector("#leaderboardBodyName");
 const leaderboardScore = document.querySelector("#leaderboardBodyScore");
 const replayButtonEl = document.querySelector("#replayButton");
 const resetLeaderboardButtonEl = document.querySelector("#leaderboardResetButton");
+const questionsBoxEl = document.querySelector("#questionsBox");
 
 
 // Global Scope variables
@@ -202,7 +203,7 @@ function validateAnswer() {
       // Check if the clicked element has the class 'answer'
       if (clickedAnswer.classList.contains('answer')) {
         // Remove the event listener to prevent additional clicks
-        questionsBox.removeEventListener("click", handleClick);
+        questionsBoxEl.removeEventListener("click", handleClick);
         // Check if the clicked answer matches the correct answer
         if (clickedAnswer.innerHTML === correctAnswer) {
           // If the answer is correct, display a success message and increment the player's score
@@ -220,7 +221,7 @@ function validateAnswer() {
       }
     }
     // Re-add the event listener for next question
-    questionsBox.addEventListener("click",handleClick);
+    questionsBoxEl.addEventListener("click",handleClick);
 }
 
 // showEndscreen is a simple function that displays the endscreen and tells the player their score
